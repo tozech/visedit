@@ -11,6 +11,7 @@ Latest 1.
    pip install gqrid --pre
    jupyter nbextension enable --py widgetsnbextension --sys-prefix
    jupyter nbextension enable --py --sys-prefix qgrid
+   conda install matplotlib
 
 https://github.com/quantopian/qgrid
 https://ipywidgets.readthedocs.io/en/latest/user_install.html
