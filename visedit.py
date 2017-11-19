@@ -12,17 +12,20 @@ import qgrid
 
 pd.set_option('display.max_rows', 8)
 
-def heatmap_with_table(arr):
-    df = pd.DataFrame(arr)
+def heatmap(arr):
+    fig, ax = plt.subplots()
+    ax.imshow(arr)
+    return fig, ax
+
+def table_for_figure(data, fig):
+    df = pd.DataFrame(data)
     df_stacked = df.stack()
     df_stacked = pd.DataFrame({'values': df_stacked,
                                'checked': [False for i in range(len(df_stacked))]})
     df_stacked = df_stacked[['values', 'checked']]
 
     qgrid_widget = qgrid.QgridWidget(df=df_stacked, show_toolbar=True)
-
-    fig, ax = plt.subplots()
-    ax.imshow(df.values)
+    
     pos = []
     def onclick(event):
         x = int(round(event.xdata))
@@ -30,6 +33,9 @@ def heatmap_with_table(arr):
         pos.append([x, y])
         qgrid_widget.df = df_stacked.reindex([(y, x)])
     fig.canvas.mpl_connect('button_press_event', onclick)
+    return qgrid_widget
+      
+def heatmap_with_table(arr):
+    fig, ax = heatmap(arr)
+    qgrid_widget = table_for_figure(arr, fig)
     return qgrid_widget, fig, ax
-    
-                              
